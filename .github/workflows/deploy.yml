@@ -40,14 +40,14 @@ jobs:
         run: |
           rm -rf docs
           mkdir -vp docs
-          cp -vrf core/target/apidocs/* docs/
+          cp -vrf target/apidocs/* docs/
           cp -vrf .doc/JAVADOC-README.md docs/README.md
 
       - name: "Generate the Javadoc sitemap"
         id: sitemap
         uses: cicirello/generate-sitemap@v1
         with:
-          base-url-path: https://CarmJos.github.io/EasyConfiguration
+          base-url-path: https://CarmJos.github.io/EasyOptions
           path-to-root: docs
 
       - name: "Output stats"
@@ -72,7 +72,7 @@ jobs:
         run: |
           cd docs
           git init
-          git remote add origin git@github.com:CarmJos/EasyConfiguration.git
+          git remote add origin git@github.com:CarmJos/EasyOptions.git
           git checkout -b gh-pages
           git add -A
           git commit -m "API Document generated."
