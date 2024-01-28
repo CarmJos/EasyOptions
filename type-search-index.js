@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"cc.carm.lib.easyoptions","l":"OptionHolder"},{"p":"cc.carm.lib.easyoptions","l":"OptionType"}]
