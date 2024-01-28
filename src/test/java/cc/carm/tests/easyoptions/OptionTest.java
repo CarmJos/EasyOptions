@@ -11,10 +11,11 @@ public class OptionTest {
     public void test() {
 
         // Create holder
-        OptionHolder holder = new OptionHolder();
+        OptionHolder holder = OptionHolder.createOptionHolder();
 
         // Get options if not set
         String separator = holder.get(DemoOptions.SEPARATOR);
+        System.out.println(separator);
         Assert.assertTrue(DemoOptions.SEPARATOR.isDefault(separator));
 
         // Set value
@@ -25,6 +26,7 @@ public class OptionTest {
         String previous = holder.set(DemoOptions.SEPARATOR, null);
         Assert.assertTrue(DemoOptions.SEPARATOR.isDefault(holder.get(DemoOptions.SEPARATOR)));
         Assert.assertEquals(":-)", previous);
+        System.out.println(previous);
     }
 
 

@@ -1,4 +1,3 @@
-
 package cc.carm.lib.easyoptions;
 
 import org.jetbrains.annotations.NotNull;
@@ -8,24 +7,17 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+public interface OptionHolder {
 
-/**
- * A data holder for options.
- *
- * @author CarmJos
- * @version 1.0.0
- */
-public class OptionHolder {
-
-    protected final Map<OptionType<?>, Object> options;
-
-    public OptionHolder() {
-        this(new ConcurrentHashMap<>());
+    static OptionHolder createOptionHolder() {
+        return createOptionHolder(new ConcurrentHashMap<>());
     }
 
-    public OptionHolder(Map<OptionType<?>, Object> options) {
-        this.options = options;
+    static OptionHolder createOptionHolder(@NotNull Map<OptionType<?>, Object> options) {
+        return () -> options;
     }
+
+    @NotNull Map<OptionType<?>, Object> options();
 
     /**
      * Get the value of option.
@@ -35,8 +27,8 @@ public class OptionHolder {
      * @return Value of option
      */
     @SuppressWarnings("unchecked")
-    public <V> @NotNull V get(@NotNull OptionType<V> type) {
-        return Optional.ofNullable(options.get(type)).map(v -> (V) v).orElseGet(type::defaults);
+    default <V> @NotNull V get(@NotNull OptionType<V> type) {
+        return Optional.ofNullable(options().get(type)).map(v -> (V) v).orElseGet(type::defaults);
     }
 
     /**
@@ -48,12 +40,23 @@ public class OptionHolder {
      * @return Previous value of option
      */
     @SuppressWarnings("unchecked")
-    public <V> @Nullable V set(@NotNull OptionType<V> type, @Nullable V value) {
+    default <V> @Nullable V set(@NotNull OptionType<V> type, @Nullable V value) {
         if (value == null) {
-            return (V) options.remove(type);
+            return (V) options().remove(type);
         } else {
-            return (V) options.put(type, value);
+            return (V) options().put(type, value);
         }
+    }
+
+    /**
+     * Set the value of option to option's {@link OptionType#defaults()}.
+     *
+     * @param type {@link OptionType}
+     * @param <V>  Value type
+     * @return Previous value of option
+     */
+    default <V> @Nullable V clear(@NotNull OptionType<V> type) {
+        return set(type, null);
     }
 
 }
